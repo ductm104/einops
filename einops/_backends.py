@@ -511,7 +511,11 @@ class KerasBackend(AbstractBackend):
         self.K = tf.keras.backend
 
     def is_appropriate_type(self, tensor):
-        return self.tf.is_tensor(tensor) and self.K.is_keras_tensor(tensor)
+        try:
+            return self.tf.is_tensor(tensor) and self.K.is_keras_tensor(tensor)
+        except:
+            # keras version conflict with tensorflow version
+            return False
 
     def create_symbol(self, shape):
         return self.keras.Input(batch_shape=shape)
